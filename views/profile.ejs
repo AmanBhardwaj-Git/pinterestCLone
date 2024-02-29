@@ -1,0 +1,79 @@
+<% include ./partials/header.ejs %>
+<div class="profile w-full min-h-screen bg-zinc-800 text-zinc-800 pt-1">
+    <form hidden action="/fileupload" id="uploadform" method="post" enctype="multipart/form-data">
+        <input type="file" name="image">
+    </form>
+   
+        <form hidden action="/update" method="post" id="updateedit" >
+            <div class="bg-zinc-900 flex z-10 flex-col nowrap absolute top-[50%] -translate-x-1/2 -translate-y-1/2 left-[50%]  max-w-[30vw] h-[23vh] px-2 py-1 items-center justify-center gap-2 rounded-lg border-2 ">
+                <div class="mt-0 flex items-center justify-between w-full ">
+                <h3 class="ml-3 text-sm opacity-50 text-yellow-400 font-medium">Update Details</h2>
+                    <div class="w-fit">
+                         <i id="closebtn" class="hover:cursor-pointer ri-close-circle-line h-[100%] text-red-400 font-medium"></i>
+                     </div>
+                </div>
+                <input class="text-zinc-200 h-[20%] bg-zinc-800 pl-2 w-full mt-1" type="text" name="username" placeholder="New username">
+                <input class="text-zinc-200 h-[20%] bg-zinc-800 pl-2 w-full mt-1" type="text" name="name" placeholder="New name">
+                <input id="submit" class="h-[27%] cursor-pointer w-full mt-2 bg-red-500 text-white rounded-md text-2xl" type="submit" value="Save">
+            </div>
+        </form>
+      
+    <div class="profdets flex flex-col items-center mt-20">
+        <div class="relative">
+            <span id="uploadicon" class="bg-zinc-300 hover:scale-125 hover:cursor-pointer w-8 h-8 absolute bottom-0 right-0 rounded-full flex items-center justify-center ">
+                <i class="ri-pencil-fill text-zinc-800 bg-zinc-300 "></i>
+            </span>
+            <div class="w-32 h-32 bg-zinc-200 rounded-full overflow-hidden">
+                <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profileImage %>" alt="user-profile-pic">
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-semibold mt-5 text-zinc-200"><%= user.name %></h1>
+        <h3 class="text-md text-zinc-200">@ <span class="text-zinc-400"><%= user.username %></span></h3>
+        <div class="follow flex align-center gap-2">
+            <h3 class ="text-sm text-zinc-200 mt-2">91 followers</h3>
+            <h3 class ="text-sm text-zinc-200 mt-2">8 following</h3>
+        </div>
+        <button id="editbtn" class=" text-zinc-800 relative hover:cursor-pointer border-2 hover:border-zinc-200 hover:text-zinc-200 hover:bg-zinc-600 mt-5 px-7 py-2 bg-zinc-300  rounded-full text-xs font-semibold">Edit</button>
+        <a  href="/add" class="px-10 py-2 rounded-lg bg-red-700 text-xs border-2 border-red-800 hover:border-red-400 hover:bg-red-800 text-zinc-300 font-semibold mt-5">Add New Post</a>
+    </div>
+    <div class="cards flex flex-wrap gap-10 px-10 mt-10">
+        <div class="card">
+          
+            <div class="w-52 h-40 border-2  border-zinc-400 rounded-lg overflow-hidden">
+                <img class="w-full h-full object-cover hover:scale-125" 
+                src="/images/uploads/<%= user?.posts[0]?.image %>" alt="card-img">
+            </div>
+            <a href="/show/posts" class="text-zinc-200 inline-block text-xl font-semibold mt-3">Uploaded pins</a>
+            <h5 class="text-zinc-400 text-sm font-medium opacity-60"><%= user.posts.length %> pin uploaded</h5>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    // transfering click of edit-pencil icon to hidden form input
+
+    document.querySelector('#uploadicon').addEventListener('click', function(){
+        document.querySelector('#uploadform input').click();
+    })
+
+    document.querySelector('#uploadform input').addEventListener('change', function(){
+        document.querySelector('#uploadform').submit();
+    })
+
+    document.querySelector('#editbtn').addEventListener('click', function(){
+        document.querySelector('#updateedit').style.display = 'block';
+    })
+
+    document.querySelector('#updateedit #submit').addEventListener('click', function(){
+        document.querySelector('#updateedit').submit();
+    })
+    document.querySelector('#updateedit #closebtn').addEventListener('click', function(){
+         document.querySelector('#updateedit').style.display = 'none';
+    })
+   
+
+</script>
+<% include ./partials/footer.ejs %>
